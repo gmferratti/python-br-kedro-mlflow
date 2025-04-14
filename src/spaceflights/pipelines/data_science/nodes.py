@@ -1,6 +1,7 @@
 import logging
 
 import pandas as pd
+import numpy as np
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import max_error, mean_absolute_error, r2_score
 from sklearn.model_selection import train_test_split
@@ -59,3 +60,23 @@ def evaluate_model(
         "mae": {"value": mae, "step": 0},
         "max_error": {"value": me, "step": 0},
     }
+
+def predict_from_model(
+    regressor: LinearRegression, 
+    model_input_table: pd.DataFrame,
+    expected_features: list[str]
+) -> pd.DataFrame:
+    """
+    Generates predictions using a trained model.
+
+    Args:
+        regressor: Trained model with a `predict` method.
+        model_input_table: Preprocessed input data.
+        expected_features: List of features used during training.
+
+    Returns:
+        DataFrame containing model predictions.
+    """
+    data = model_input_table[expected_features]
+    preds = regressor.predict(data)
+    return pd.DataFrame(preds, columns=["prediction"])
