@@ -28,14 +28,14 @@ model_input_table:
     save_args:
       index: False
 
-# regressor:
-#   type: kedro_mlflow.io.models.MlflowModelTrackingDataset
-#   flavor: mlflow.sklearn
-#   artifact_path: regressor
-#   save_args:
-#     registered_model_name: spaceflights-regressor
-
 regressor:
+  type: kedro_mlflow.io.models.MlflowModelTrackingDataset
+  flavor: mlflow.sklearn
+  artifact_path: regressor
+  save_args:
+    registered_model_name: spaceflights-regressor
+
+specific_regressor:
   type: kedro_mlflow.io.models.MlflowModelTrackingDataset
   flavor: mlflow.sklearn
   run_id: 3407b91a98dc4eddb3b2858090a2b211

@@ -30,7 +30,7 @@ def create_pipeline(**kwargs) -> Pipeline:
             node(
                 func=predict_from_model,
                 inputs=[
-                    "regressor", 
+                    "specific_regressor", 
                     "model_input_table", 
                     "params:model_options.features"],
                 outputs="predictions",

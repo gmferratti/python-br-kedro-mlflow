@@ -34,22 +34,22 @@ def train_model(X_train: pd.DataFrame, y_train: pd.Series) -> LinearRegression:
     Returns:
         Trained model.
     """
-    regressor = LinearRegression()
-    regressor.fit(X_train, y_train)
-    return regressor
+    specific_regressor = LinearRegression()
+    specific_regressor.fit(X_train, y_train)
+    return specific_regressor
 
 
 def evaluate_model(
-    regressor: LinearRegression, X_test: pd.DataFrame, y_test: pd.Series
+    specific_regressor: LinearRegression, X_test: pd.DataFrame, y_test: pd.Series
 ) -> dict[str, float]:
     """Calculates and logs the coefficient of determination.
 
     Args:
-        regressor: Trained model.
+        specific_regressor: Trained model.
         X_test: Testing data of independent features.
         y_test: Testing data for price.
     """
-    y_pred = regressor.predict(X_test)
+    y_pred = specific_regressor.predict(X_test)
     score = r2_score(y_test, y_pred)
     mae = mean_absolute_error(y_test, y_pred)
     me = max_error(y_test, y_pred)
@@ -62,7 +62,7 @@ def evaluate_model(
     }
 
 def predict_from_model(
-    regressor: LinearRegression, 
+    specific_regressor: LinearRegression, 
     model_input_table: pd.DataFrame,
     expected_features: list[str]
 ) -> pd.DataFrame:
@@ -70,7 +70,7 @@ def predict_from_model(
     Generates predictions using a trained model.
 
     Args:
-        regressor: Trained model with a `predict` method.
+        specific_regressor: Trained model with a `predict` method.
         model_input_table: Preprocessed input data.
         expected_features: List of features used during training.
 
@@ -78,5 +78,5 @@ def predict_from_model(
         DataFrame containing model predictions.
     """
     data = model_input_table[expected_features]
-    preds = regressor.predict(data)
+    preds = specific_regressor.predict(data)
     return pd.DataFrame(preds, columns=["prediction"])

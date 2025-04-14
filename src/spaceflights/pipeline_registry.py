@@ -8,6 +8,7 @@ from spaceflights.pipelines.reporting.pipeline import create_pipeline as create_
 
 
 def register_pipelines() -> Dict[str, Pipeline]:
+    
     # Pipelines modulares
     data_processing_pipeline = create_data_processing_pipeline()
     data_science_pipeline = create_data_science_pipeline()
@@ -17,17 +18,17 @@ def register_pipelines() -> Dict[str, Pipeline]:
     full_ml_pipeline = data_processing_pipeline + data_science_pipeline
 
     # Subconjunto de nós usados exclusivamente para treino do modelo
-    training_nodes_pipeline = full_ml_pipeline.only_nodes_with_tags("training")
+    training_pipeline = full_ml_pipeline.only_nodes_with_tags("training")
 
     # Pipeline de inferência completo: inclui modelo + gráficos + métricas
-    full_inference_pipeline = full_ml_pipeline.only_nodes_with_tags("inference") + reporting_pipeline
+    inference_pipeline = full_ml_pipeline.only_nodes_with_tags("inference")
 
-    # Pipeline padrão (tudo)
-    default_pipeline = data_processing_pipeline + data_science_pipeline + reporting_pipeline
+    # Pipeline padrão
+    default_pipeline = inference_pipeline + reporting_pipeline
 
     return {
-        "training": training_nodes_pipeline,            # usado para MLflow
-        "inference": full_inference_pipeline,        # para reuso em produção ou análise
-        "reporting": reporting_pipeline,             # somente relatórios
-        "__default__": default_pipeline,             # tudo, para facilitar execução completa
+        "training": training_pipeline,
+        "inference": inference_pipeline,
+        "reporting": reporting_pipeline,
+        "__default__": default_pipeline,
     }

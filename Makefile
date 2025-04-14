@@ -1,9 +1,9 @@
-# Caminho fixo para ativação do ambiente virtual (Windows-style)
-ACTIVATE = .venv/Scripts/activate
+# Caminho de ativação do ambiente virtual (bash no Windows)
+ACTIVATE = source .venv/Scripts/activate
 
 .PHONY: activate
 activate:
-	@$(ACTIVATE) && echo "Virtual environment activated!"
+	@$(ACTIVATE) && echo "✅ Virtual environment activated."
 
 .PHONY: run
 run:
@@ -23,15 +23,15 @@ report:
 
 .PHONY: clean
 clean:
-	@rmdir /S /Q data/05_model_input 2>nul || echo "model_input not found"
-	@rmdir /S /Q data/07_model_output 2>nul || echo "model_output not found"
-	@rmdir /S /Q data/08_reporting 2>nul || echo "reporting not found"
-	@echo "Cleaned intermediate and output data folders."
+	@rm -rf data/05_model_input || echo "⚠️ model_input not found"
+	@rm -rf data/07_model_output || echo "⚠️ model_output not found"
+	@rm -rf data/08_reporting || echo "⚠️ reporting not found"
+	@echo "🧹 Cleaned intermediate and output data folders."
 
 .PHONY: install
 install:
-	@$(ACTIVATE) && pip install -r src/requirements.txt
+	@$(ACTIVATE) && pip install -r src/requirements.txt && echo "📦 Dependencies installed."
 
 .PHONY: mlflow
 mlflow:
-	kedro mlflow ui
+	@kedro mlflow ui
